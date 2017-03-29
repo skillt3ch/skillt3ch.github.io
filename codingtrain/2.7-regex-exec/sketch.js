@@ -6,10 +6,17 @@ function setup() {
     txt = select("#txt");
     var submit = select("#submit");
 
-    submit.mousePressed(newText);
+    submit.mousePressed(regexSearch);
 }
 
-function newText() {
+function regexSearch() {
     var s = txt.value();
-    createP(s);
+    var r = /(\d{4})-\d{4}/g // find all phone numbers in format XXXX-XXXX
+
+    var result = r.exec(s);
+
+    while (result !== null) {
+        createP(result[0] + ", " + result[1]);
+        result = r.exec(s);
+    }
 }
