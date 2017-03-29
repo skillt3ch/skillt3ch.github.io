@@ -1,13 +1,15 @@
-var textinput;
+var txt;
 
-function update () {
+function setup() {
     noCanvas();
-    textinput = select("#textinput");
+
+    txt = select("#txt");
     var submit = select("#submit");
+
     submit.mousePressed(newText);
 }
 
-function newText () {
-    var s = textinput.value();
-    console.log(s);
+function newText() {
+    var s = txt.value();
+    createP(s);
 }
