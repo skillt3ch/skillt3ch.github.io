@@ -16,11 +16,14 @@
 </head>
 
 <body>
-    <h1>2.9: Regular Expressions: replace()</h1>
-    <p>Using regex, we split a string into an array in a variety of way.</p>
-    <textarea id="txt">A rainbow is a meteorological 999-1234 phenomenon that is caused by reflection, refraction and dispersion of light in water droplets resulting in a 111-8765 spectrum of light appearing in the sky. It takes the form of a multicoloured arc. Rainbows caused by sunlight always appear 867-5309 in the section of sky directly opposite the sun. Rainbows can be full circles. However, the average observer sees only an arc formed by illuminated droplets above the ground,[1] and centred on a line from the sun to the observer's eye. In a primary rainbow, the arc shows red on the outer part and violet on the inner side. This rainbow is caused by light being refracted when entering a droplet of water, then reflected inside on the back of the droplet and refracted again when leaving it. In a double rainbow, a second arc is seen outside the primary arc, and has the order of its colours reversed, with red on the inner side of the arc.
+    <h1>2.9.1: Word Interactor</h1>
+    <p>Using regex, we split a string into an array of words which are stored in 'span' objects.</p>
+    <p>When hovering the mouse over each word, the background-color will change to a random one.</p>
+    <p>Also, the text will be replaced with "*" to hide each word. The size of the font is inversely proportional to the length of the word</p>
+    <textarea id="txt">A rainbow is a meteorological phenomenon that is caused by reflection, refraction and dispersion of light in water droplets resulting in a spectrum of light appearing in the sky. It takes the form of a multicoloured arc. Rainbows caused by sunlight always appear in the section of sky directly opposite the sun. Rainbows can be full circles. However, the average observer sees only an arc formed by illuminated droplets above the ground,[1] and centred on a line from the sun to the observer's eye. In a primary rainbow, the arc shows red on the outer part and violet on the inner side. This rainbow is caused by light being refracted when entering a droplet of water, then reflected inside on the back of the droplet and refracted again when leaving it. In a double rainbow, a second arc is seen outside the primary arc, and has the order of its colours reversed, with red on the inner side of the arc.
     </textarea>
     <button id="submit">submit</button>
+    <p id="output"></p>
 </body>
 
 </html>
