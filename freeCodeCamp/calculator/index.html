@@ -2,50 +2,48 @@
 <html>
 
 <head>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"></link>
     <link rel="stylesheet" href="style.css"></link>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"></link>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
     <script src="calc.js"></script>
 </head>
 
 <body>
-    <div class="calc">
-        <h2>Digital Calculator</h2>
-        <div class="lcd">
-            <p id="result">0</p>
-        </div>
-        <div class="buttons">
-            <div class="row">
-                <button>C</button>
-                <button>CE</button>
-                <button>÷</button>
-                <button>×</button>
-            </div>
-            <div class="row">
-                <button>7</button>
-                <button>8</button>
-                <button>9</button>
-                <button>-</button>
-            </div>
-            <div class="row">
-                <button>4</button>
-                <button>5</button>
-                <button>6</button>
-                <button>+</button>
-            </div>
-            <div class="row">
-                <button>1</button>
-                <button>2</button>
-                <button>3</button>
-                <button id="equals">=</button>
-            </div>
-            <div class="row">
-                <button id="zero">0</button>
-                <button>.</button>
+    <div class="container">
+        <div class="calc">
+            <h2>digital calculator</h2>
+            <p id="lcd"></p>
+            <p id="eq"></p>
+            <!-- BUTTONS -->
+            <div class="buttons">
+                <button class="red-button" value="ac">AC</button>
+                <button class="red-button" value="ce">CE</button>
+                <button class="operator-button" value="/">÷</button>
+                <button class="operator-button" value="x">×</button>
+
+                <button value="7">7</button>
+                <button value="8">8</button>
+                <button value="9">9</button>
+                <button class="operator-button" value="-">-</button>
+
+                <button value="4">4</button>
+                <button value="5">5</button>
+                <button value="6">6</button>
+                <button class="operator-button" value="+">+</button>
+
+                <button value="1">1</button>
+                <button value="2">2</button>
+                <button value="3">3</button>
+                <button value="n" class="invisible">n</button>
+
+                <button value="0" id="zeroButton">0</button>
+                <button value=".">.</button>
+                <button class="operator-button" value="=" id="equalButton">=</button>
             </div>
 
         </div>
-
-    </div>
+        <h5>designed and coded by <a href="https://github.com/skillt3ch" target="_blank">skillt3ch</a></h5>
 </body>
 
 </html>
