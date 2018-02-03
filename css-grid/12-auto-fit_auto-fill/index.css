@@ -1,0 +1,17 @@
+.container {
+	border: 1px solid black;
+	display: grid;
+	grid-gap: 5px;
+	grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+	/*	grid-template-rows: 200px 200px;*/
+	grid-auto-rows: 200px;
+}
+
+.container2 {
+	border: 1px solid black;
+	display: grid;
+	grid-gap: 5px;
+	grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+	/*	grid-template-rows: 200px 200px;*/
+	grid-auto-rows: 200px;
+}

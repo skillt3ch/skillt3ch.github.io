@@ -1,0 +1,10 @@
+.container {
+	border: 1px solid black;
+	display: grid;
+	height: 100%;
+	grid-template-columns: repeat(3, 100px);
+	grid-template-rows: repeat(2, 100px);
+	grid-gap: 5px;
+	justify-content: center;
+	align-content: center;
+}
