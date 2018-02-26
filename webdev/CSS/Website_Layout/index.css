@@ -14,11 +14,6 @@ body {
 	font-size: 40px;
 	text-align: center;
 	background: white;
-	transition: 0.4s;
-}
-
-.header:hover {
-	font-size: 60px;
 }
 
 /* Style the top nav bar */
@@ -43,7 +38,7 @@ body {
 .topnav a:hover {
 	background-color: #ddd;
 	color: black;
-	width: 120px;
+	width: 90px;
 }
 
 .search-container {
