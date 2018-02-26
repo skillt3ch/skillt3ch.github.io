@@ -1,0 +1,45 @@
+#navlist {
+	position: relative;
+}
+
+#navlist li {
+	list-style: none;
+	position: absolute;
+}
+
+#navlist li, #navlist a {
+	height: 44px;
+	display: block;
+}
+
+
+
+#home {
+	left: 0px;
+	width: 46px;
+	background: url("img_navsprites_hover.gif") 0 0;
+}
+
+#prev {
+	left: 60px;
+	width: 43px;
+	background: url("img_navsprites_hover.gif") -47px 0;
+}
+
+#next {
+	left: 120px;
+	width: 43px;
+	background: url("img_navsprites_hover.gif") -91px 0;
+}
+
+#home a:hover {
+	background: url("img_navsprites_hover.gif") 0 -45px;
+}
+
+#prev a:hover {
+	background: url("img_navsprites_hover.gif") -47px -45px;
+}
+
+#next a:hover {
+	background: url("img_navsprites_hover.gif") -91px -45px;
+}

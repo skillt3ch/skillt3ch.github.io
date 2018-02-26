@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<link rel="stylesheet" href="index.css">
+		<script>
+			function toggleDiv() {
+				if (document.getElementById("panel").style.display === "none") {
+					document.getElementById("panel").style.display = "block";
+					document.getElementById("flip").innerHTML = "Hide &lt;div&gt; element";
+				} else {
+					document.getElementById("panel").style.display = "none";
+					document.getElementById("flip").innerHTML = "Show &lt;div&gt; element";
+				}
+			}
+		</script>
+	</head>
+
+	<body>
+		<div class="container">
+			<p class="flip" id="flip" onclick="toggleDiv()">Show &lt;div&gt; element</p>
+			<div id="panel">
+				<p>This &lt;div&gt; element is hidden by default</p>
+				<p>It is styled with CSS, and we use JS to show it</p>
+				<p>lorem</p>
+			</div>
+		</div>
+	</body>
+</html>

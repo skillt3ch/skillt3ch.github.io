@@ -1,0 +1,20 @@
+.floating_box {
+	display: inline-block;
+/*	border: 1px solid black;*/
+	height: 100px;
+	width: 150px;
+	padding: 10px 0px;
+	margin: 5px;
+	text-align: center;
+	background-color: #f8bed1;
+	font-family: sans-serif;
+	text-transform: uppercase;
+	color: #5716fc
+}
+
+.floating_box p {
+	position: relative;
+	top: 50%;
+	transform: translateY(-50%);
+	margin: 0;
+}

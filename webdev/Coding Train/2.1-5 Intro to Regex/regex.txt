@@ -1,0 +1,46 @@
+# -----------------------------------------------------------------
+# PHONE NUMBERS
+958-849-9384
+940.948.2372
+(020)384-9753
+
+# Keeps the first 3 digits of phone number and redacts the rest
+# Keeps formatting of separators the eg same:  ().-
+
+Find:       (\()?(\d{3})([-.)])\d{3}([-.])\d{4}
+Replace:    $1$2$3XXX$4XXXX
+#
+# -----------------------------------------------------------------
+# Last. First.
+Collins, Bill
+Andrews, Kyle
+Roberts, Donald
+
+# Reverses order of name to:    First Last
+Find:       (\w+),\s(\w+)
+Replace:    $2 $1
+
+#
+# -----------------------------------------------------------------
+# Match markdown
+
+[Google](http://www.google.com)
+[GitHub](https://github.com)
+[skillt3ch's GitHub](https://skillt3ch.github.io)
+
+# Matches markdownd and returns just the link in HTML format
+
+Find:       \[(.*?)\]\((.*?)\)
+Replace:    <a href="$2">$1</a>
+
+#
+# -----------------------------------------------------------------
+# Match doubles
+
+This is is some double double word word words
+These are are are some some words words
+
+# Finds and removes doubles
+
+Find:       \b(\w+)\s\1\b
+Replace:    $1              (note: there is a space trailing the $1 )

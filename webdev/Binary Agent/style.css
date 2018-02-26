@@ -1,0 +1,28 @@
+@import url(https://fonts.googleapis.com/css?family=Roboto);
+
+.container {
+    padding: 10px;
+    margin: 20px;
+}
+
+body {
+    font-family: 'Roboto', sans-serif;
+}
+
+h1 {
+    font-size: 50px;
+    text-align: center;
+}
+
+p {
+    text-align: center;
+}
+
+.centered {
+    text-align: center;
+}
+
+#cipher {
+    width: 100px;
+    
+}
