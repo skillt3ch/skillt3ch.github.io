@@ -1,0 +1,38 @@
+body {
+	margin: 0;
+}
+
+#notification {
+	position: relative;
+	font-family: sans-serif;
+	background-color: #99ffdb;
+	height: 30px;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+
+#close {
+	position: absolute;
+	right: 7px;
+}
+
+#close:hover {
+	cursor: pointer;
+}
+
+.center_button {
+	display: flex;
+	justify-content: center;
+	margin: 20px 0 0 0;
+	width: 100%;
+	height: 70px;
+}
+
+#show {
+	height: 40px;
+}
+
+#show:hover {
+	cursor: pointer;
+}

@@ -1,0 +1,27 @@
+div {
+	margin: 5px;
+}
+
+div p {
+	display: none;
+	background-color: yellow;
+	padding: 13px;
+	max-width: 100px;
+	text-align: center;
+}
+
+div:hover p {
+	display: block;
+}
+
+input[type="text"]:focus {
+	background-color: lawngreen;
+}
+
+.sel::selection {
+	background-color: hotpink;
+}
+
+.sel::first-letter {
+	font-size: 1.5em;
+}

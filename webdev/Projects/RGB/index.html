@@ -1,0 +1,21 @@
+<html>
+    <head>
+        <link rel="stylesheet" type="text/css" href="index.css">
+        <script src="index.js"></script>
+    </head>
+    <body onload="changeRGB()">
+        <div class="sliders" id="sliders">
+            <p>RED</p>
+            <input id="slideRed" type="range" min="0" max="255" onchange="changeRGB()" oninput="changeRGB()">
+            <div id="valRed"></div>
+            <p>GREEN</p>
+            <input id="slideGreen" type="range" min="0" max="255" onchange="changeRGB()" oninput="changeRGB()">
+            <div id="valGreen"></div>
+            <p>BLUE</p>
+            <input id="slideBlue" type="range" min="0" max="255" onchange="changeRGB()" oninput="changeRGB()">
+            <div id="valBlue"></div>
+            <p>LUMINOSITY</p>
+            <div id="luma"></div>
+        </div>
+    </body>
+</html>

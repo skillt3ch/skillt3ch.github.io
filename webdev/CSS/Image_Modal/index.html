@@ -1,0 +1,21 @@
+<!doctype html>
+<html>
+	<head>
+		<link rel="stylesheet" href="index.css">
+		<title>Image Modal</title>
+	</head>
+
+	<body>
+		<h2>Image Modal</h2>
+		<p>In this example, we use CSS to create a modal (dialog box) that is hidden by default.</p>
+		<p>We use JavaScript to trigger the modal and to display the current image inside the modal when it is clicked on. Also note that we use the value from the image's "alt" attribute as an image caption text inside the modal.</p>
+		<img src="https://loremflickr.com/cache/resized/4726_25609439028_de998449e7_c_800_600_nofilter.jpg" alt="Cat lying down in basket" id="myImg" width="400px" height="300px">
+<!--		Modal Div -->
+		<div class="modal" id="myModal">
+			<span class="close">x</span>
+			<img class="modal-content" id="modalImg">
+			<div id="caption"></div>
+		</div>
+		<script src="index.js"></script>
+	</body>
+</html>
