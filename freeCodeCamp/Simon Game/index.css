@@ -1,8 +1,7 @@
 @import url('https://fonts.googleapis.com/css?family=Barlow');
 
 html {
-/*	background-image: url('http://static.simpledesktops.com/uploads/desktops/2016/07/19/Path.png');*/
-	background-color: #343B41;
+	background-image: url('http://static.simpledesktops.com/uploads/desktops/2016/07/19/Path.png');
 }
 
 body {
@@ -21,11 +20,11 @@ h3 {
 
 a:link, a:visited {
 	text-decoration: none;
-	color: #4FB286;
+	color: #05f2ff;
 }
 
 a:hover {
-	color: #50FFB1;
+	color: #f205ff;
 }
 
 .wrapper {
