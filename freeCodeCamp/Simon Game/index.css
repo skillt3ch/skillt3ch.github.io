@@ -170,6 +170,13 @@ a:hover {
 	right: 10px;
 	color: white;
 	font-family: sans-serif;
+	animation: pulse 2s ease-in-out infinite alternate;
+}
+
+@keyframes pulse {
+	100% {
+		transform: scale(0.9);
+	}
 }
 
 .led {
