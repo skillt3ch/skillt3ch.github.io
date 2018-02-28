@@ -1,0 +1,24 @@
+html, body {
+	background-color: #ffeead;
+	margin: 10px;
+	font-family: sans-serif;
+}
+
+.container > div {
+	padding: 10px;
+	text-align: center;
+	font-size: 2em;
+	color: #ffeead;
+}
+
+.container > div:nth-child(3n+1) {
+	background-color: #96ceb4;	
+}
+
+.container > div:nth-child(3n+2) {
+	background-color: #ff6f69;
+}
+
+.container > div:nth-child(3n+3) {
+  background-color: #f265ff;
+}

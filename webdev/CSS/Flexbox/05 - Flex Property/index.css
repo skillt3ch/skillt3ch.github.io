@@ -1,0 +1,16 @@
+.container {
+	border: 5px solid #ffcc5c;
+	display: flex;
+}
+
+/*.container > div {
+	flex: 1;
+}
+
+.container > .search {
+	flex: 2;
+}*/
+
+.home, .logout {
+	flex: 1
+}
