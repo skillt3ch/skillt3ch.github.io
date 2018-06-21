@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="style.css">
+    <title>Document</title>
+</head>
+
+<body>
+    <h1 id="title">Survey Form</h1>
+    <div id="form-container">
+        <p id="description">Description of survey form</p>
+        <form id="survey-form" action="#">
+            <div class="row">
+                <div class="labels">
+                    <label for="name" id="name-label">* Name:</label>
+                </div>
+                <div class="rightTab">
+                    <input type="text" id="name" class="input-field" autofocus placeholder="Enter your name">
+                </div>
+            </div>
+            <div class="row">
+                <div class="labels">
+                    <label for="email" id="email-label"> * Email:</label>
+                </div>
+                <div class="rightTab">
+                    <input type="email" id="email" class="input-field" placeholder="Enter your email">
+                </div>
+            </div>
+            <div class="row">
+                <div class="labels">
+                    <label for="age" id="number-label">* Age:</label>
+                </div>
+                <div class="rightTab">
+                    <input type="number" id="age" class="input-field" placeholder="Age">
+                </div>
+            </div>
+            <div class="row">
+                <div class="labels">
+                    <label for="dropdown">What brought you here?</label>
+                </div>
+                <div class="rightTab">
+                    <select class="dropdown">
+                        <option disabled selected value>Select an option</option>
+                        <option value="freeCodeCamp">freeCodeCamp</option>
+                        <option value="GitHub">GitHub</option>
+                        <option value="Google">Google</option>
+                    </select>
+                </div>
+            </div>
+            <div class="row">
+                <div class="labels">
+                    <label>How likely are you to recommend?</label>
+                </div>
+                <div class="rightTab">
+                    <ul style="list-style: none;">
+                        <li class="radio">
+                            <label>
+                                <input type="radio" name="recommend" value="low">Not likely
+                            </label>
+                        </li>
+                        <li class="radio">
+                            <label>
+                                <input type="radio" name="recommend" value="med">Likely
+                            </label>
+                        </li>
+                        <li class="radio">
+                            <label>
+                                <input type="radio" name="recommend" value="high">Very Likely
+                            </label>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <div class="row">
+                <div class="labels">
+                    <label>Other options:</label>
+                </div>
+                <div class="rightTab">
+                    <ul style="list-style: none;">
+                        <li class="checkbox">
+                            <label>
+                                <input type="checkbox" name="other-options" value="1">First
+                            </label>
+                        </li>
+                        <li class="checkbox">
+                            <label>
+                                <input type="checkbox" name="other-options" value="2">Second
+                            </label>
+                        </li>
+                        <li class="checkbox">
+                            <label>
+                                <input type="checkbox" name="other-options" value="3">Third
+                            </label>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <div class="row">
+                <div class="labels">
+                    <label for="comments">Additional comments:</label>
+                </div>
+                <div class="rightTab">
+                    <textarea class="input-field" id="comments" placeholder="Enter your comments here"></textarea>
+                </div>
+            </div>
+            <button id="submit" type="submit">Submit</button>
+        </form>
+    </div>
+</body>
+
+</html>
