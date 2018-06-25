@@ -5,11 +5,12 @@ body {
 #notification {
 	position: relative;
 	font-family: sans-serif;
-	background-color: #99ffdb;
+	background-color: rgba(153, 255, 219, 1);
 	height: 30px;
 	display: flex;
 	justify-content: center;
 	align-items: center;
+	transition: 0.3s;
 }
 
 #close {
