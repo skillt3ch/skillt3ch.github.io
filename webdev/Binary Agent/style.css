@@ -1,5 +1,4 @@
 @import url(https://fonts.googleapis.com/css?family=Roboto);
-
 .container {
     padding: 10px;
     margin: 20px;
@@ -23,6 +22,5 @@ p {
 }
 
 #cipher {
-    width: 100px;
-    
+    width: 500px;
 }

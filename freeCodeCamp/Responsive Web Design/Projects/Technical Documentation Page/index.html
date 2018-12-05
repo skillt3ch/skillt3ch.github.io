@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <script src="https://rawgit.com/freeCodeCamp/testable-projects-fcc/master/build/bundle.js"></script>
+    <link rel="stylesheet" href="style.css">
+    <title>Document</title>
+</head>
+
+<body>
+    <nav id="navbar">
+        <header>JS Documentation</header>
+        <ul>
+            <a href="#Introduction" class="nav-link">
+                <li>Introduction</li>
+            </a>
+            <a href="#Variables" class="nav-link">
+                <li>Variables</li>
+            </a>
+            <a href="#Data_Types" class="nav-link">
+                <li>Data Types</li>
+            </a>
+            <a href="#Functions" class="nav-link">
+                <li>Functions</li>
+            </a>
+            <a href="#Objects" class="nav-link">
+                <li>Objects</li>
+            </a>
+            <a href="#Scope" class="nav-link">
+                <li>Scope</li>
+            </a>
+            <a href="#Events" class="nav-link">
+                <li>Events</li>
+            </a>
+            <a href="#Strings" class="nav-link">
+                <li>Strings</li>
+            </a>
+            <a href="#Arrays" class="nav-link">
+                <li>Arrays</li>
+            </a>
+            <a href="#Math" class="nav-link">
+                <li>Math</li>
+            </a>
+        </ul>
+    </nav>
+    <main id="main-doc">
+        <section class="main-section" id="Introduction">
+            <header>Introduction</header>
+            <p>This page contains some examples of what JavaScript can do.</p>
+            <code>document.getElementById("demo").innerHTML = "Hello JavaScript";</code>
+        </section>
+        <section class="main-section" id="Variables">
+            <header>Variables</header>
+            <p>JavaScript variables are containers for storing data values. In this example, x, y, and z, are variables:</p>
+            <code>var x = 5;
+                <br>var y = 6 ;
+                <br>var z = x + y;</code>
+            <p>From the example above, you can expect:</p>
+            <ul>
+                <li>x stores the value 5</li>
+                <li>y stores the value 6</li>
+                <li>z stores the value 11</li>
+            </ul>
+            <p>In this example, price1, price2, and total, are variables:</p>
+            <code>var price1 = 5;
+                <br>var price2 = 6;
+                <br>var total = price1 + price2;</code>
+        </section>
+        <section class="main-section" id="Data_Types">
+            <header>Data Types</header>
+            <p>JavaScript variables can hold many
+                <strong>data types</strong>: numbers, strings, objects and more:</p>
+            <code>var length = 16; // Number
+                <br>var lastName = "Johnson"; // String
+                <br>var x = {firstName:"John", lastName:"Doe"}; // Object</code>
+        </section>
+        <section class="main-section" id="Functions">
+            <header>Functions</header>
+            <p>
+                A JavaScript function is a block of code designed to perform a particular task.
+                <br>A JavaScript function is executed when "something" invokes it (calls it).
+            </p>
+            <code>function myFunction(p1, p2) {
+                <br> return p1 * p2; // The function returns the product of p1 and p2
+                <br>}</code>
+            <p>The code inside the function will execute when "something" invokes (calls) the function:</p>
+            <ul>
+                <li>When an event occurs (when a user clicks a button)</li>
+                <li>When it is invoked (called) from JavaScript code</li>
+                <li>Automatically (self invoked)</li>
+            </ul>
+        </section>
+        <section class="main-section" id="Objects">
+            <header>Objects</header>
+            <p>You have already learned that JavaScript variables are containers for data values. This code assigns a simple
+                value (Fiat) to a variable named car:</p>
+            <code>var car = "Fiat";</code>
+            <p>Objects are variables too. But objects can contain many values. This code assigns many values (Fiat, 500, white)
+                to a variable named car:
+            </p>
+            <code>var car = {type:"Fiat", model:"500", color:"white"};</code>
+        </section>
+        <section class="main-section" id="Scope">
+            <header>Scope</header>
+            <p>In JavaScript there are two types of scope:</p>
+            <ul>
+                <li>Local scope</li>
+                <li>Global scope</li>
+            </ul>
+        </section>
+        <section class="main-section" id="Events">
+            <header>Events</header>
+            <p>Coming soon...</p>
+        </section>
+        <section class="main-section" id="Strings">
+            <header>Strings</header>
+            <p>Coming soon...</p>
+        </section>
+        <section class="main-section" id="Arrays">
+            <header>Arrays</header>
+            <p>Coming soon...</p>
+        </section>
+        <section class="main-section" id="Math">
+            <header>Math</header>
+            <p>Coming soon...</p>
+        </section>
+    </main>
+</body>
+
+</html>

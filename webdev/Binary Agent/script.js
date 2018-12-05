@@ -1,4 +1,3 @@
-
 function binaryAgent(str) {
     // split string into array
     var arr = str.split(' ');
@@ -23,8 +22,8 @@ function binaryAgent(str) {
 
 
 $(document).ready(function () {
-    //$("p").html("Document loaded successfully");
-    $("#submit").click(function() {
+    // $("p").html("Document loaded successfully");
+    $("#submit").click(function () {
         $("#decoded").html(binaryAgent($("#cipher").val()));
     });
 });
