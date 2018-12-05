@@ -83,6 +83,8 @@
         ]
         // The user's score
         let score = 0;
+        // When set to true the snake is changing direction
+        let changingDirection = false;
         // Horizontal velocity
         let dx = 10;
         // Vertical velocity
@@ -109,6 +111,7 @@
         function main() {
             if (didGameEnd()) return;
             setTimeout(function onTick() {
+                changingDirection = false;
                 clearCanvas();
                 drawFood();
                 advanceSnake();
@@ -238,6 +241,16 @@
             const RIGHT_KEY = 39;
             const UP_KEY = 38;
             const DOWN_KEY = 40;
+
+            /**
+             * Prevent the snake from reversing
+             * Example scenario:
+             * Snake is moving to the right. User presses down and immediately left
+             * and the snake immediately changes direction without taking a step down first
+             */
+            if (changingDirection) return;
+            changingDirection = true;
+
             const keyPressed = event.keyCode;
             const goingUp = dy === -10;
             const goingDown = dy === 10;
