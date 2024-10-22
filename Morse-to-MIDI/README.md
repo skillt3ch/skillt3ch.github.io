@@ -23,9 +23,9 @@ Check out the live version of the app here: [Text → Morse Code → MIDI](https
 	1.	Enter a text string in the input box (e.g., “HELLO WORLD”).
 	2.	Press Cmd + Return (Mac) or Ctrl + Enter (Windows), or click the **Generate** button.
 	3.	A MIDI file is generated based on the Morse code translation of the input:
-	•	Dots (.) are represented by 1/8th notes.
-	•	Dashes (-) are represented by 1/4th notes.
-	•	Proper pauses (rests) are added between notes, letters, and words.
+		•	Dots (.) are represented by 1/8th notes.
+		•	Dashes (-) are represented by 1/4th notes.
+		•	Proper pauses (rests) are added between notes, letters, and words.
 	4.	Download the generated .mid file using the styled button with a music note icon.
 
 ## Morse Code Mapping
