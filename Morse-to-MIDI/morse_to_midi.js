@@ -91,16 +91,30 @@ function convertToMidi() {
     const note = 36;  // C1 note (in Ableton)
     const dotDuration = 128;  // 1/8th note length
     const dashDuration = 256;  // 1/4th note length
-    const restDuration = 128;  // Pause between symbols (same as dot duration)
+    const letterPause = dotDuration * 3;  // Pause between letters (3-dot length)
+    const wordPause = dotDuration * 7;  // Pause between words (7-dot length)
+    const restDuration = dotDuration;  // Rest between dots and dashes
 
     // Parse the morse code string and generate the MIDI file
-    for (let symbol of morseString) {
+    for (let i = 0; i < morseString.length; i++) {
+        const symbol = morseString[i];
+
         if (symbol === '.') {
-            track.addNote(0, note, dotDuration);  // Add dot (1/8th note)
+            track.addNoteOn(0, note, 0);  // Turn note on immediately
+            track.addNoteOff(0, note, dotDuration);  // Turn note off after dot duration
+            track.addNoteOff(0, 0, restDuration);  // Add a rest (empty space) after dot
         } else if (symbol === '-') {
-            track.addNote(0, note, dashDuration);  // Add dash (1/4th note)
-        } else {
-            track.addNoteOff(0, restDuration);  // Space between symbols
+            track.addNoteOn(0, note, 0);  // Turn note on immediately
+            track.addNoteOff(0, note, dashDuration);  // Turn note off after dash duration
+            track.addNoteOff(0, 0, restDuration);  // Add a rest (empty space) after dash
+        } else if (symbol === ' ') {
+            // Check if it's a letter space or word space
+            if (morseString[i + 1] === ' ') {
+                track.addNoteOff(0, 0, wordPause);  // Add word pause (7-dot length)
+                i++;  // Skip the next space
+            } else {
+                track.addNoteOff(0, 0, letterPause);  // Add letter pause (3-dot length)
+            }
         }
     }
 
