@@ -34,26 +34,40 @@ function convertToMidi() {
     // Parse the morse code string and generate the MIDI file
     for (let symbol of morseString) {
         if (symbol === '.') {
-            console.log('Adding dot (1/8 note)');
             track.addNote(0, noteC1, dotDuration);  // Add dot (1/8th note)
         } else if (symbol === '-') {
-            console.log('Adding dash (1/4 note)');
             track.addNote(0, noteC1, dashDuration);  // Add dash (1/4th note)
         } else {
-            console.log('Adding space between symbols');
             track.addNoteOff(0, restDuration);  // Space between symbols
         }
     }
 
-    console.log('Track:', track);
-
-    // Convert the MIDI file into byte data and create a Blob
+    // Convert the MIDI file into byte data
     const midiFile = file.toBytes();
-    console.log('MIDI File Bytes:', midiFile);
-    const blob = new Blob([new Uint8Array(midiFile)], { type: 'audio/midi' });
-    const url = URL.createObjectURL(blob);
+    console.log('Generated MIDI file bytes:', midiFile);  // Log the byte data
+    console.log('MIDI byte array size:', midiFile.length);  // Log the size of the byte array
 
-    // Create a download link for the generated MIDI file
+    if (midiFile.length === 0) {
+        console.error('MIDI file generation failed: empty byte array');
+        document.getElementById('status').textContent = "Failed to generate MIDI file!";
+        return;
+    }
+
+    // Convert the byte array into a Uint8Array properly
+    const uint8Array = new Uint8Array(midiFile.length);  // Initialize the correct size
+    for (let i = 0; i < midiFile.length; i++) {
+        uint8Array[i] = midiFile.charCodeAt(i);  // Convert each character in the byte array
+    }
+    console.log('Uint8Array size:', uint8Array.length);  // Log to ensure conversion is correct
+
+    // Create the Blob using the Uint8Array
+    const blob = new Blob([uint8Array], { type: 'audio/midi' });
+    console.log('Blob size after Uint8Array conversion:', blob.size);
+
+    const url = URL.createObjectURL(blob);
+    console.log('Blob size:', blob.size);  // Log the size of the blob
+
+    // Create and display the download link
     const downloadLink = document.createElement('a');
     downloadLink.href = url;
     downloadLink.download = 'morse_code.mid';
