@@ -20,8 +20,7 @@ function convertTextToMusicalMorse(text) {
         const morse = morseCode[char];
         if (!morse) return '';  // Return empty string for unsupported characters
 
-        // Replace Morse dots/dashes with musical symbols (♪ for 1/8th note, ♩ for 1/4th note)
-        return morse.replace(/\./g, '♪').replace(/-/g, '♩');
+        return morse.replace(/\./g, '♪').replace(/-/g, '♩.');  // ♪ = quaver, ♩. = dotted crotchet
     }).join(' ');
 }
 
@@ -71,7 +70,6 @@ document.addEventListener('keydown', function(event) {
 function convertToMidi() {
     const input = document.getElementById('morse-input').value;
     const morseString = convertTextToMorse(input);
-    const musicalMorseString = convertTextToMusicalMorse(input);
 
     if (!morseString) {
         document.getElementById('status').textContent = "Invalid input!";
@@ -80,68 +78,65 @@ function convertToMidi() {
 
     // Display the Morse code on the page with typewriter effect
     displayMorseCode(morseString);
-
-    // Display the musical Morse code on the page with typewriter effect
-    displayMusicalMorseCode(musicalMorseString);
+    // Display the Morse code on the page with musical symbols
+    displayMusicalMorseCode(convertTextToMusicalMorse(input));  // Use musical symbols
 
     const file = new Midi.File();
     const track = new Midi.Track();
     file.addTrack(track);
 
-    const note = 36;  // C1 note (in Ableton)
-    const dotDuration = 128;  // 1/8th note length
-    const dashDuration = 256;  // 1/4th note length
-    const letterPause = dotDuration * 3;  // Pause between letters (3-dot length)
-    const wordPause = dotDuration * 7;  // Pause between words (7-dot length)
-    const restDuration = dotDuration;  // Rest between dots and dashes
+    const note = 36;  // C2 note
+    const dotDuration = 32;  // 1/16th note length
+    const dashDuration = dotDuration * 3;  // Dotted 1/8th note length
+    const restBetweenNotes = dotDuration;  // 1-dot-length rest between dots/dashes
+    const letterPause = dotDuration * 2;  // Additional rest to make 3 units between letters
+    const wordPause = dotDuration * 6;  // Additional rest to make 7 units between words
 
     // Parse the morse code string and generate the MIDI file
     for (let i = 0; i < morseString.length; i++) {
         const symbol = morseString[i];
 
         if (symbol === '.') {
+            // Play a dot (1/16th note)
             track.addNoteOn(0, note, 0);  // Turn note on immediately
             track.addNoteOff(0, note, dotDuration);  // Turn note off after dot duration
-            track.addNoteOff(0, 0, restDuration);  // Add a rest (empty space) after dot
+            // Only add rest if this is not the last character
+            if (i < morseString.length - 1) {
+                track.addNoteOff(0, 0, restBetweenNotes);  // Add 1-unit rest
+            }
         } else if (symbol === '-') {
+            // Play a dash (dotted 1/8th note)
             track.addNoteOn(0, note, 0);  // Turn note on immediately
             track.addNoteOff(0, note, dashDuration);  // Turn note off after dash duration
-            track.addNoteOff(0, 0, restDuration);  // Add a rest (empty space) after dash
+            // Only add rest if this is not the last character
+            if (i < morseString.length - 1) {
+                track.addNoteOff(0, 0, restBetweenNotes);  // Add 1-unit rest
+            }
         } else if (symbol === ' ') {
             // Check if it's a letter space or word space
             if (morseString[i + 1] === ' ') {
-                track.addNoteOff(0, 0, wordPause);  // Add word pause (7-dot length)
+                // Word space: add 7-unit rest (already includes 1-unit rest)
+                track.addNoteOff(0, 0, wordPause);
                 i++;  // Skip the next space
             } else {
-                track.addNoteOff(0, 0, letterPause);  // Add letter pause (3-dot length)
+                // Letter space: add additional 2-unit rest (for total of 3 units)
+                track.addNoteOff(0, 0, letterPause);
             }
         }
     }
+    
+    track.addNoteOff(0, 0, 0);  // No extra rest after the last symbol
 
     // Convert the MIDI file into byte data
     const midiFile = file.toBytes();
-    console.log('Generated MIDI file bytes:', midiFile);  // Log the byte data
-    console.log('MIDI byte array size:', midiFile.length);  // Log the size of the byte array
-
-    if (midiFile.length === 0) {
-        console.error('MIDI file generation failed: empty byte array');
-        document.getElementById('status').textContent = "Failed to generate MIDI file!";
-        return;
-    }
-
-    // Convert the byte array into a Uint8Array properly
-    const uint8Array = new Uint8Array(midiFile.length);  // Initialize the correct size
+    const uint8Array = new Uint8Array(midiFile.length);
     for (let i = 0; i < midiFile.length; i++) {
         uint8Array[i] = midiFile.charCodeAt(i);  // Convert each character in the byte array
     }
-    console.log('Uint8Array size:', uint8Array.length);  // Log to ensure conversion is correct
 
     // Create the Blob using the Uint8Array
     const blob = new Blob([uint8Array], { type: 'audio/midi' });
-    console.log('Blob size after Uint8Array conversion:', blob.size);
-
     const url = URL.createObjectURL(blob);
-    console.log('Blob size:', blob.size);  // Log the size of the blob
 
     // Create and display the download link
     const downloadLink = document.createElement('a');
