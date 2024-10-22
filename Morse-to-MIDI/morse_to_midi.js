@@ -7,20 +7,82 @@ const morseCode = {
     '6': '-....', '7': '--...', '8': '---..', '9': '----.', '0': '-----', ' ': ' '
 };
 
+const typewriter_speed = 10; // Speed of typing in ms
+
 // Function to convert text to morse code
 function convertTextToMorse(text) {
     return text.toUpperCase().split('').map(char => morseCode[char] || '').join(' ');
 }
 
+// Function to convert text to morse code (use musical symbols instead of dots/dashes)
+function convertTextToMusicalMorse(text) {
+    return text.toUpperCase().split('').map(char => {
+        const morse = morseCode[char];
+        if (!morse) return '';  // Return empty string for unsupported characters
+
+        // Replace Morse dots/dashes with musical symbols (♪ for 1/8th note, ♩ for 1/4th note)
+        return morse.replace(/\./g, '♪').replace(/-/g, '♩');
+    }).join(' ');
+}
+
+// Typewriter effect for displaying musical Morse code
+function displayMusicalMorseCode(morseString) {
+    const display = document.getElementById('note-morse-display');
+    display.innerHTML = ''; // Clear any previous content
+    let index = 0;
+
+    function typewriter() {
+        if (index < morseString.length) {
+            display.innerHTML += morseString[index];
+            index++;
+            setTimeout(typewriter, typewriter_speed);
+        }
+    }
+
+    typewriter();
+}
+
+// Typewriter effect for Morse code display
+function displayMorseCode(morseString) {
+    const display = document.getElementById('morse-display');
+    display.innerHTML = ''; // Clear any previous content
+    let index = 0;
+
+    function typewriter() {
+        if (index < morseString.length) {
+            display.innerHTML += morseString[index];
+            index++;
+            setTimeout(typewriter, typewriter_speed);  // Delay each character by the typerwriter_speed
+        }
+    }
+
+    typewriter();
+}
+
+// Keyboard shortcut for command+return (Mac) and ctrl+enter (Windows)
+document.addEventListener('keydown', function(event) {
+    const isMac = navigator.userAgent.indexOf('Mac') !== -1;  // Detect macOS based on user agent
+    if ((isMac && event.metaKey && event.key === 'Enter') || (!isMac && event.ctrlKey && event.key === 'Enter')) {
+        convertToMidi();
+    }
+});
+
 // Function to convert morse code to MIDI
 function convertToMidi() {
     const input = document.getElementById('morse-input').value;
     const morseString = convertTextToMorse(input);
+    const musicalMorseString = convertTextToMusicalMorse(input);
 
     if (!morseString) {
         document.getElementById('status').textContent = "Invalid input!";
         return;
     }
+
+    // Display the Morse code on the page with typewriter effect
+    displayMorseCode(morseString);
+
+    // Display the musical Morse code on the page with typewriter effect
+    displayMusicalMorseCode(musicalMorseString);
 
     const file = new Midi.File();
     const track = new Midi.Track();
@@ -71,7 +133,9 @@ function convertToMidi() {
     const downloadLink = document.createElement('a');
     downloadLink.href = url;
     downloadLink.download = 'morse_code.mid';
-    downloadLink.textContent = 'Download MIDI file';
+    // downloadLink.textContent = 'Download MIDI file';
+    downloadLink.className = 'btn';  // Add the button class
+    downloadLink.innerHTML = '<i class="fas fa-music"></i> Download MIDI file';  // Add the icon and text
     document.getElementById('status').textContent = '';
     document.getElementById('status').appendChild(downloadLink);
 }
