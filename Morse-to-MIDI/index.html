@@ -12,36 +12,62 @@
             align-items: center;
             justify-content: center;
             height: 100vh;
-            background-color: #f4f4f4;
+            background-color: #282a36;
+        }
+
+        textarea::placeholder {
+            color: #f8f8f2;
+            opacity: 0.5;
+            font-style: italic;
         }
 
         #morse-input {
+            margin-top: 2em;
             width: 300px;
-            height: 100px;
+            height: 30px;
+            background-color: #44475a;
+            color: #f8f8f2;
+            padding: 1em;
+        }
+
+        h1 {
+            color: #ff79c6;
+            font-style: italic;
+            font-weight: bold;
         }
 
         button {
-            margin-top: 10px;
-            padding: 10px;
-            background-color: #4CAF50;
-            color: white;
-            border: none;
+            margin-top: 2em;
+            padding: 1em;
+            background-color: #44475a;
+            color: #f1fa8c;
+            border-style: solid;
+            border-color: #bd93f9;
             cursor: pointer;
+            font-size: large;
         }
 
         button:hover {
-            background-color: #45a049;
+            border-color: #f8f8f2;
         }
 
         #status {
-            margin-top: 10px;
+            margin-top: 2em;
+            color: #ffb86c;
+            font-style: italic;
+            font-weight: 200;
+            font-size: 1.2em;
+        }
+
+        a {
+            color: #50fa7b;
         }
     </style>
 </head>
 <body>
     <h1>Morse Code to MIDI Converter</h1>
 
-    <textarea id="morse-input" placeholder="Enter your text (e.g. HELLO WORLD)"></textarea>
+    <textarea id="morse-input" placeholder="Enter your text..."></textarea>
     <button onclick="convertToMidi()">Generate MIDI</button>
 
     <p id="status"></p>

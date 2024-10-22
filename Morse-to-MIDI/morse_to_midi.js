@@ -26,7 +26,7 @@ function convertToMidi() {
     const track = new Midi.Track();
     file.addTrack(track);
 
-    const noteC1 = 24;  // C1 note
+    const note = 36;  // C1 note (in Ableton)
     const dotDuration = 128;  // 1/8th note length
     const dashDuration = 256;  // 1/4th note length
     const restDuration = 128;  // Pause between symbols (same as dot duration)
@@ -34,9 +34,9 @@ function convertToMidi() {
     // Parse the morse code string and generate the MIDI file
     for (let symbol of morseString) {
         if (symbol === '.') {
-            track.addNote(0, noteC1, dotDuration);  // Add dot (1/8th note)
+            track.addNote(0, note, dotDuration);  // Add dot (1/8th note)
         } else if (symbol === '-') {
-            track.addNote(0, noteC1, dashDuration);  // Add dash (1/4th note)
+            track.addNote(0, note, dashDuration);  // Add dash (1/4th note)
         } else {
             track.addNoteOff(0, restDuration);  // Space between symbols
         }
