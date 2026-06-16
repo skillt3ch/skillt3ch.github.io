@@ -1,0 +1,731 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Push-up Tracker</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet"/>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@2.44.0/tabler-icons.min.css"/>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --bg: #ffffff;
+    --bg-secondary: #f5f5f4;
+    --bg-tertiary: #f0efed;
+    --text: #1a1a18;
+    --text-secondary: #6b6b67;
+    --text-tertiary: #9a9a96;
+    --border: rgba(0,0,0,0.12);
+    --border-med: rgba(0,0,0,0.2);
+    --accent: #1D9E75;
+    --accent-light: #e1f5ee;
+    --radius-md: 8px;
+    --radius-lg: 12px;
+    --radius-xl: 16px;
+    color-scheme: light dark;
+  }
+
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg: #1c1c1a;
+      --bg-secondary: #252523;
+      --bg-tertiary: #2e2e2b;
+      --text: #f0efed;
+      --text-secondary: #9a9a96;
+      --text-tertiary: #666663;
+      --border: rgba(255,255,255,0.1);
+      --border-med: rgba(255,255,255,0.18);
+      --accent: #2bbf8e;
+      --accent-light: #0a2e22;
+    }
+  }
+
+  html, body {
+    min-height: 100%;
+    background: var(--bg-tertiary);
+    font-family: 'Inter', system-ui, -apple-system, sans-serif;
+    font-size: 16px;
+    color: var(--text);
+    -webkit-font-smoothing: antialiased;
+  }
+
+  .app {
+    max-width: 420px;
+    margin: 0 auto;
+    padding: 1.25rem 1rem 3rem;
+    min-height: 100vh;
+    background: var(--bg-tertiary);
+  }
+
+  .header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 1.5rem;
+  }
+  .header h1 { font-size: 20px; font-weight: 600; color: var(--text); }
+
+  .header-right { display: flex; align-items: center; gap: 8px; }
+
+  .streak {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    font-size: 13px;
+    color: var(--text-secondary);
+    background: var(--bg-secondary);
+    padding: 5px 10px;
+    border-radius: 20px;
+    border: 0.5px solid var(--border);
+  }
+  .streak i { color: #e67e22; font-size: 15px; }
+  .streak-num { font-weight: 600; color: var(--text); }
+
+  /* Sync indicator */
+  .sync-dot {
+    width: 7px; height: 7px;
+    border-radius: 50%;
+    background: var(--text-tertiary);
+    transition: background 0.3s;
+    flex-shrink: 0;
+  }
+  .sync-dot.syncing { background: #e6a817; animation: pulse 1s infinite; }
+  .sync-dot.synced  { background: var(--accent); }
+  .sync-dot.error   { background: #e24b4a; }
+  @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.4} }
+
+  /* Progress ring card */
+  .ring-card {
+    background: var(--bg);
+    border: 0.5px solid var(--border);
+    border-radius: var(--radius-xl);
+    padding: 1.5rem 1rem 1.25rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-bottom: 1rem;
+  }
+  .ring-wrap { position: relative; width: 200px; height: 200px; margin-bottom: 1rem; }
+  .ring-wrap svg { transform: rotate(-90deg); }
+  .ring-center {
+    position: absolute; inset: 0;
+    display: flex; flex-direction: column;
+    align-items: center; justify-content: center; gap: 2px;
+  }
+  .ring-done { font-size: 40px; font-weight: 600; color: var(--text); line-height: 1; }
+  .ring-label { font-size: 14px; color: var(--text-secondary); }
+  .ring-pct { font-size: 12px; color: var(--text-tertiary); margin-top: 2px; }
+
+  .goal-row {
+    display: flex; align-items: center; gap: 8px;
+    background: var(--bg-secondary);
+    padding: 8px 12px;
+    border-radius: var(--radius-lg);
+    border: 0.5px solid var(--border);
+    width: 100%;
+    max-width: 260px;
+  }
+  .goal-row label { font-size: 13px; color: var(--text-secondary); flex: 1; }
+  .goal-row input {
+    width: 72px; text-align: center;
+    font-size: 14px; font-weight: 500;
+    padding: 5px 8px;
+    border: 0.5px solid var(--border-med);
+    border-radius: var(--radius-md);
+    background: var(--bg);
+    color: var(--text);
+    font-family: inherit;
+    outline: none;
+  }
+  .goal-row input:focus { border-color: var(--accent); }
+  .goal-btn {
+    padding: 5px 12px; font-size: 13px; font-weight: 500;
+    border: 0.5px solid var(--border-med);
+    border-radius: var(--radius-md);
+    background: transparent; color: var(--text);
+    cursor: pointer; font-family: inherit;
+    transition: background 0.15s;
+  }
+  .goal-btn:hover { background: var(--bg-secondary); }
+
+  /* Wheel card */
+  .wheel-card {
+    background: var(--bg);
+    border: 0.5px solid var(--border);
+    border-radius: var(--radius-xl);
+    padding: 1.25rem 1rem;
+    margin-bottom: 1rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.75rem;
+  }
+  .wheel-label { font-size: 13px; color: var(--text-secondary); }
+
+  .wheel-outer {
+    width: 150px; height: 150px;
+    border-radius: 50%;
+    border: 0.5px solid var(--border-med);
+    background: var(--bg-secondary);
+    position: relative;
+    user-select: none; touch-action: none;
+    cursor: grab;
+    transition: opacity 0.2s;
+  }
+  .wheel-disc {
+    width: 100%; height: 100%;
+    border-radius: 50%;
+    position: absolute; inset: 0;
+    transition: transform 0.04s linear;
+  }
+  .wheel-outer:active { cursor: grabbing; }
+
+  .wheel-notch {
+    width: 5px; height: 14px;
+    background: var(--text-tertiary);
+    border-radius: 3px;
+    position: absolute; top: 10px;
+    left: 50%; transform: translateX(-50%);
+  }
+
+  .wheel-inner {
+    position: absolute; inset: 20px;
+    border-radius: 50%;
+    background: var(--bg);
+    border: 0.5px solid var(--border);
+    display: flex; flex-direction: column;
+    align-items: center; justify-content: center; gap: 2px;
+  }
+  .wheel-val { font-size: 30px; font-weight: 600; color: var(--text); line-height: 1; }
+  .wheel-sub { font-size: 11px; color: var(--text-tertiary); }
+
+  /* Buttons */
+  .log-btn {
+    width: 100%; padding: 13px;
+    font-size: 15px; font-weight: 500;
+    border: 0.5px solid var(--border-med);
+    border-radius: var(--radius-lg);
+    background: var(--bg);
+    color: var(--text);
+    cursor: pointer;
+    font-family: inherit;
+    display: flex; align-items: center; justify-content: center; gap: 6px;
+    transition: background 0.15s, border-color 0.15s, color 0.15s;
+    margin-bottom: 0.5rem;
+  }
+  .log-btn:hover { background: var(--bg-secondary); }
+  .log-btn.done { border-color: var(--accent); color: var(--accent); background: var(--accent-light); }
+  .log-btn i { font-size: 18px; }
+
+  .reset-btn {
+    width: 100%; padding: 6px;
+    font-size: 12px; border: none;
+    background: none; color: var(--text-tertiary);
+    cursor: pointer; font-family: inherit;
+    transition: color 0.15s;
+    margin-bottom: 1rem;
+  }
+  .reset-btn:hover { color: var(--text-secondary); }
+
+  /* Sections */
+  .section { margin-bottom: 1.25rem; }
+  .section-title {
+    font-size: 11px; font-weight: 600;
+    color: var(--text-tertiary);
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    margin-bottom: 8px;
+  }
+
+  .sets-list {
+    display: flex; flex-direction: column; gap: 5px;
+    max-height: 180px; overflow-y: auto;
+  }
+  .set-row {
+    display: flex; align-items: center;
+    justify-content: space-between;
+    padding: 8px 12px;
+    background: var(--bg);
+    border: 0.5px solid var(--border);
+    border-radius: var(--radius-md);
+    font-size: 13px;
+  }
+  .set-count { font-weight: 500; color: var(--text); }
+  .set-time { color: var(--text-tertiary); font-size: 11px; }
+  .empty-state {
+    font-size: 13px; color: var(--text-tertiary);
+    text-align: center; padding: 16px;
+    background: var(--bg);
+    border: 0.5px solid var(--border);
+    border-radius: var(--radius-md);
+  }
+
+  /* Week chart */
+  .week-chart {
+    display: flex; align-items: flex-end;
+    gap: 5px;
+    position: relative;
+    background: var(--bg);
+    border: 0.5px solid var(--border);
+    border-radius: var(--radius-lg);
+    padding: 12px 12px 22px;
+  }
+  .bar-col {
+    display: flex; flex-direction: column;
+    align-items: center; flex: 1;
+    position: relative; height: 56px;
+  }
+  .bar-fill {
+    width: 100%; max-width: 28px;
+    border-radius: 3px 3px 0 0;
+    background: var(--border-med);
+    min-height: 2px;
+    position: absolute; bottom: 0;
+    transition: height 0.4s ease;
+  }
+  .bar-fill.today { background: var(--accent); }
+  .bar-fill.goal-met { background: var(--accent); }
+  .bar-day {
+    font-size: 10px; color: var(--text-tertiary);
+    position: absolute; bottom: -18px;
+  }
+  .bar-val {
+    font-size: 9px; color: var(--text-tertiary);
+    position: absolute; top: -13px;
+    white-space: nowrap;
+  }
+
+  /* Toast */
+  .toast {
+    position: fixed; bottom: 24px; left: 50%;
+    transform: translateX(-50%);
+    background: var(--text); color: var(--bg);
+    padding: 9px 20px; border-radius: 24px;
+    font-size: 13px; font-weight: 500;
+    opacity: 0; transition: opacity 0.25s;
+    pointer-events: none; z-index: 999;
+    white-space: nowrap;
+  }
+  .toast.show { opacity: 1; }
+</style>
+</head>
+<body>
+<div class="app">
+  <div class="header">
+    <h1>Push-ups</h1>
+    <div class="header-right">
+      <div class="sync-dot" id="syncDot" title="Sync status"></div>
+      <div class="streak">
+        <i class="ti ti-flame"></i>
+        <span class="streak-num" id="streakNum">0</span>
+        <span>day streak</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="ring-card">
+    <div class="ring-wrap">
+      <svg width="200" height="200" viewBox="0 0 200 200">
+        <circle cx="100" cy="100" r="86" fill="none" stroke-width="11" stroke="#e5e5e3"/>
+        <circle id="ringArc" cx="100" cy="100" r="86" fill="none" stroke-width="11"
+          stroke="#1D9E75" stroke-dasharray="540.35" stroke-dashoffset="540.35"
+          stroke-linecap="round" style="transition:stroke-dashoffset 0.5s ease"/>
+      </svg>
+      <div class="ring-center">
+        <div class="ring-done" id="ringDone">0</div>
+        <div class="ring-label" id="ringLabel">of 200</div>
+        <div class="ring-pct" id="ringPct">0%</div>
+      </div>
+    </div>
+    <div class="goal-row">
+      <label for="goalInput">Daily goal</label>
+      <input type="number" id="goalInput" value="200" min="1" max="9999"/>
+      <button class="goal-btn" onclick="setGoal()">Set</button>
+    </div>
+  </div>
+
+  <div class="wheel-card">
+    <div class="wheel-label" id="wheelLabel">Drag wheel to set reps</div>
+    <div class="wheel-outer" id="wheel">
+      <div class="wheel-disc" id="wheelDisc">
+        <div class="wheel-notch"></div>
+      </div>
+      <div class="wheel-inner">
+        <div class="wheel-val" id="wheelVal">0</div>
+        <div class="wheel-sub">reps</div>
+      </div>
+    </div>
+  </div>
+
+  <button class="log-btn" id="logBtn" onclick="logSet()">
+    <i class="ti ti-plus"></i> Log set
+  </button>
+  <button class="reset-btn" onclick="resetDay()">Reset today</button>
+
+  <div class="section">
+    <div class="section-title">Today's sets</div>
+    <div class="sets-list" id="todaySets">
+      <div class="empty-state">No sets logged yet</div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-title">This week</div>
+    <div class="week-chart" id="weekChart"></div>
+  </div>
+</div>
+<div class="toast" id="toast"></div>
+
+<script>
+// ─── Supabase config ───────────────────────────────────────────────
+const SUPABASE_URL = 'https://cugpiwajsewztmxlbfuf.supabase.co';
+const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImN1Z3Bpd2Fqc2V3enRteGxiZnVmIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODE1NTIxNjUsImV4cCI6MjA5NzEyODE2NX0.mZ3zpTSGKSCmkDVXgejoy4ZNvSduii8PCnmA6_D9KbY';
+const HEADERS = {
+  'Content-Type': 'application/json',
+  'apikey': SUPABASE_ANON_KEY,
+  'Authorization': `Bearer ${SUPABASE_ANON_KEY}`,
+  'Prefer': 'resolution=merge-duplicates'
+};
+
+// ─── Local state (cache) ───────────────────────────────────────────
+const CIRC = 2 * Math.PI * 86;
+let goal = parseInt(localStorage.getItem('pu_goal') || '200');
+let todayKey = new Date().toISOString().slice(0, 10);
+// data keyed by date string, e.g. { "2026-06-16": { total: 40, sets: [...] } }
+let data = JSON.parse(localStorage.getItem('pu_data') || '{}');
+
+// Dark mode ring track
+if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+  document.querySelector('circle').style.stroke = '#2a2a28';
+}
+
+// ─── Sync helpers ──────────────────────────────────────────────────
+function setSyncState(state) {
+  // state: 'syncing' | 'synced' | 'error' | 'idle'
+  const dot = document.getElementById('syncDot');
+  dot.className = 'sync-dot' + (state !== 'idle' ? ' ' + state : '');
+  dot.title = { syncing: 'Syncing…', synced: 'Synced', error: 'Sync error — working offline', idle: '' }[state] || '';
+}
+
+async function pushToSupabase(dateKey) {
+  const row = data[dateKey] || { total: 0, sets: [] };
+  setSyncState('syncing');
+  try {
+    const res = await fetch(`${SUPABASE_URL}/rest/v1/pushups`, {
+      method: 'POST',
+      headers: HEADERS,
+      body: JSON.stringify({ day: dateKey, total: row.total, sets: row.sets })
+    });
+    if (!res.ok) throw new Error(await res.text());
+    setSyncState('synced');
+    setTimeout(() => setSyncState('idle'), 2000);
+  } catch (err) {
+    console.error('Supabase push error:', err);
+    setSyncState('error');
+  }
+}
+
+async function pullFromSupabase() {
+  setSyncState('syncing');
+  try {
+    // Pull last 30 days
+    const since = new Date();
+    since.setDate(since.getDate() - 30);
+    const sinceStr = since.toISOString().slice(0, 10);
+    const res = await fetch(
+      `${SUPABASE_URL}/rest/v1/pushups?day=gte.${sinceStr}&order=day.desc`,
+      { headers: { ...HEADERS, 'Prefer': '' } }
+    );
+    if (!res.ok) throw new Error(await res.text());
+    const rows = await res.json();
+    // Merge into local data — remote wins for any day it has
+    rows.forEach(row => {
+      data[row.day] = { total: row.total, sets: row.sets || [] };
+    });
+    localStorage.setItem('pu_data', JSON.stringify(data));
+    setSyncState('synced');
+    setTimeout(() => setSyncState('idle'), 2000);
+    render();
+  } catch (err) {
+    console.error('Supabase pull error:', err);
+    setSyncState('error');
+    // Fall through — local cache still works
+  }
+}
+
+// Also pull goal from Supabase (stored as a special row with day = '0000-00-00')
+async function pushGoal() {
+  try {
+    await fetch(`${SUPABASE_URL}/rest/v1/pushups`, {
+      method: 'POST',
+      headers: HEADERS,
+      body: JSON.stringify({ day: '0000-00-00', total: goal, sets: [] })
+    });
+  } catch (e) { /* silent */ }
+}
+
+async function pullGoal() {
+  try {
+    const res = await fetch(
+      `${SUPABASE_URL}/rest/v1/pushups?day=eq.0000-00-00`,
+      { headers: { ...HEADERS, 'Prefer': '' } }
+    );
+    if (!res.ok) return;
+    const rows = await res.json();
+    if (rows.length && rows[0].total) {
+      goal = rows[0].total;
+      localStorage.setItem('pu_goal', String(goal));
+    }
+  } catch (e) { /* silent */ }
+}
+
+// ─── Persistence ───────────────────────────────────────────────────
+function saveLocal() {
+  localStorage.setItem('pu_data', JSON.stringify(data));
+  localStorage.setItem('pu_goal', String(goal));
+}
+
+// ─── App logic ─────────────────────────────────────────────────────
+function getToday() { return data[todayKey] || { sets: [], total: 0 }; }
+
+function render() {
+  const today = getToday();
+  const done = today.total;
+  const pct = Math.min(done / goal, 1);
+  const offset = CIRC * (1 - pct);
+
+  document.getElementById('ringArc').style.strokeDashoffset = offset;
+  document.getElementById('ringArc').style.strokeDasharray = CIRC;
+  document.getElementById('ringDone').textContent = done;
+  document.getElementById('ringLabel').textContent = 'of ' + goal;
+  document.getElementById('ringPct').textContent = Math.round(pct * 100) + '%';
+  document.getElementById('goalInput').value = goal;
+
+  const remaining = Math.max(0, goal - done);
+  const wheelOuter = document.getElementById('wheel');
+  const wheelLabelEl = document.getElementById('wheelLabel');
+  if (done >= goal) {
+    wheelLabelEl.textContent = 'Daily goal complete';
+    wheelOuter.style.opacity = '0.4';
+    wheelOuter.style.pointerEvents = 'none';
+    resetWheel();
+  } else {
+    wheelLabelEl.textContent = remaining + ' reps remaining today';
+    wheelOuter.style.opacity = '1';
+    wheelOuter.style.pointerEvents = 'auto';
+  }
+
+  const logBtn = document.getElementById('logBtn');
+  if (done >= goal) {
+    logBtn.classList.add('done');
+    logBtn.innerHTML = '<i class="ti ti-check"></i> Goal complete!';
+  } else {
+    logBtn.classList.remove('done');
+    logBtn.innerHTML = '<i class="ti ti-plus"></i> Log set';
+  }
+
+  const container = document.getElementById('todaySets');
+  if (!today.sets.length) {
+    container.innerHTML = '<div class="empty-state">No sets logged yet — spin the wheel and log your first set</div>';
+  } else {
+    container.innerHTML = today.sets.slice().reverse().map(s =>
+      `<div class="set-row"><span class="set-count">${s.reps} reps</span><span class="set-time">${s.time}</span></div>`
+    ).join('');
+  }
+
+  renderWeek();
+  renderStreak();
+}
+
+function renderWeek() {
+  const days = ['S', 'M', 'T', 'W', 'T', 'F', 'S'];
+  const now = new Date();
+  const vals = Array.from({ length: 7 }, (_, i) => {
+    const d = new Date(now); d.setDate(d.getDate() - 6 + i);
+    const k = d.toISOString().slice(0, 10);
+    return { k, v: (data[k] || { total: 0 }).total, day: days[d.getDay()] };
+  });
+  const maxV = Math.max(goal, ...vals.map(x => x.v), 1);
+  const chart = document.getElementById('weekChart');
+  chart.innerHTML = '';
+  vals.forEach(({ k, v, day }) => {
+    const h = Math.max((v / maxV) * 56, v ? 2 : 0);
+    const isToday = k === todayKey;
+    const metGoal = v >= goal && v > 0;
+    const col = document.createElement('div');
+    col.className = 'bar-col';
+    col.innerHTML = `
+      ${v ? `<div class="bar-val">${v}</div>` : ''}
+      <div class="bar-fill${isToday ? ' today' : metGoal ? ' goal-met' : ''}" style="height:${h}px"></div>
+      <div class="bar-day" style="${isToday ? 'color:var(--accent);font-weight:600' : ''}">${day}</div>`;
+    chart.appendChild(col);
+  });
+}
+
+function renderStreak() {
+  let streak = 0;
+  const d = new Date();
+  for (let i = 0; i < 365; i++) {
+    const k = d.toISOString().slice(0, 10);
+    if (k === '0000-00-00') break;
+    const v = (data[k] || { total: 0 }).total;
+    if (v >= goal) { streak++; d.setDate(d.getDate() - 1); }
+    else if (k === todayKey) { d.setDate(d.getDate() - 1); }
+    else break;
+  }
+  document.getElementById('streakNum').textContent = streak;
+}
+
+function setGoal() {
+  const v = parseInt(document.getElementById('goalInput').value) || 200;
+  goal = Math.max(1, v);
+  saveLocal();
+  pushGoal();
+  resetWheel();
+  render();
+}
+
+function logSet() {
+  const reps = displayReps;
+  if (reps <= 0) { showToast('Spin the wheel to set reps'); return; }
+  if (!data[todayKey]) data[todayKey] = { sets: [], total: 0 };
+  const now = new Date();
+  const time = now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+  data[todayKey].sets.push({ reps, time });
+  data[todayKey].total += reps;
+  saveLocal();
+  pushToSupabase(todayKey);
+  resetWheel();
+  render();
+  if (data[todayKey].total >= goal) showToast('Goal reached! 🔥');
+  else showToast('+' + reps + ' reps logged');
+}
+
+function resetDay() {
+  if (confirm("Reset all of today's sets?")) {
+    data[todayKey] = { sets: [], total: 0 };
+    saveLocal();
+    pushToSupabase(todayKey);
+    resetWheel();
+    render();
+  }
+}
+
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg; t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 2200);
+}
+
+// ─── Wheel logic ───────────────────────────────────────────────────
+// 1 full rotation (360°) = 10 reps → 36° per rep
+// Magnetic detent: soft pull toward multiples of 10 at 12 o'clock
+const wheel = document.getElementById('wheel');
+const wheelValEl = document.getElementById('wheelVal');
+
+const DEG_PER_ROT = 360;
+const REPS_PER_ROT = 10;
+const DEG_PER_REP = DEG_PER_ROT / REPS_PER_ROT; // 36°
+
+const DETENT_WINDOW = 14;    // degrees either side of snap point
+const DETENT_STRENGTH = 0.45; // 0 = no pull, 1 = hard lock
+
+let rawAngle = 0;
+let displayReps = 0;
+let lastAngle = null;
+let isDragging = false;
+let wheelRotation = 0;
+
+function getRemaining() {
+  return Math.max(0, goal - getToday().total);
+}
+
+function resetWheel() {
+  rawAngle = 0;
+  displayReps = 0;
+  lastAngle = null;
+  wheelRotation = 0;
+  wheelValEl.textContent = 0;
+  const disc = document.getElementById('wheelDisc');
+  if (disc) disc.style.transform = 'rotate(0deg)';
+}
+
+function getEventAngle(e) {
+  const r = wheel.getBoundingClientRect();
+  const cx = r.left + r.width / 2, cy = r.top + r.height / 2;
+  const pt = e.touches ? e.touches[0] : e;
+  return Math.atan2(pt.clientY - cy, pt.clientX - cx) * (180 / Math.PI);
+}
+
+function applyDetent(deg) {
+  const withinRot = ((deg % DEG_PER_ROT) + DEG_PER_ROT) % DEG_PER_ROT;
+  const distToSnap = withinRot <= 180 ? withinRot : withinRot - DEG_PER_ROT;
+  if (Math.abs(distToSnap) < DETENT_WINDOW) {
+    const pull = (1 - Math.abs(distToSnap) / DETENT_WINDOW) * DETENT_STRENGTH;
+    return deg - distToSnap * pull;
+  }
+  return deg;
+}
+
+function onStart(e) {
+  if (getRemaining() <= 0) return;
+  e.preventDefault();
+  isDragging = true;
+  lastAngle = getEventAngle(e);
+}
+
+function onMove(e) {
+  if (!isDragging || lastAngle === null) return;
+  e.preventDefault();
+
+  const a = getEventAngle(e);
+  let delta = a - lastAngle;
+  if (delta > 180) delta -= 360;
+  if (delta < -180) delta += 360;
+  lastAngle = a;
+
+  rawAngle += delta;
+  const remaining = getRemaining();
+  const maxAngle = remaining * DEG_PER_REP;
+  rawAngle = Math.max(0, Math.min(maxAngle, rawAngle));
+
+  const detentedAngle = applyDetent(rawAngle);
+  const reps = Math.max(0, Math.min(remaining, Math.round(detentedAngle / DEG_PER_REP)));
+
+  wheelRotation += delta;
+  document.getElementById('wheelDisc').style.transform = `rotate(${wheelRotation}deg)`;
+
+  if (reps !== displayReps) {
+    displayReps = reps;
+    wheelValEl.textContent = displayReps;
+    if (navigator.vibrate) navigator.vibrate(8);
+  }
+}
+
+function onEnd() {
+  isDragging = false;
+  lastAngle = null;
+  rawAngle = displayReps * DEG_PER_REP;
+}
+
+wheel.addEventListener('mousedown', onStart);
+wheel.addEventListener('touchstart', onStart, { passive: false });
+document.addEventListener('mousemove', onMove);
+document.addEventListener('mouseup', onEnd);
+document.addEventListener('touchmove', onMove, { passive: false });
+document.addEventListener('touchend', onEnd);
+
+document.getElementById('goalInput').addEventListener('keydown', e => {
+  if (e.key === 'Enter') setGoal();
+});
+
+// ─── Boot ──────────────────────────────────────────────────────────
+// Render immediately from cache, then sync from Supabase
+render();
+pullGoal().then(() => pullFromSupabase());
+</script>
+</body>
+</html>
